@@ -1,0 +1,836 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================================
+   ТОКЕНЫ ТЕМЫ
+   Значения живут в :root / .dark, а @theme inline пробрасывает их
+   в утилиты Tailwind. Поэтому bg-paper, text-ink и border-line
+   сами переключаются между светлой и тёмной темой.
+   ============================================================ */
+
+:root {
+  /* Светлая тема — кремовая бумага логотипа */
+  --c-paper: #fbf8f3;
+  --c-paper-2: #f4eee4;
+  --c-paper-3: #ebe3d5;
+  --c-ink: #15181c;
+  --c-ink-2: #3b414a;
+  --c-muted: #6f7681;
+  --c-line: #e0d7c7;
+  --c-line-strong: #cdc0a9;
+  --c-gold: #b0872a;
+  --c-gold-2: #d4ad4e;
+  --c-gold-pale: #f2e7cc;
+  --c-on-gold: #1a1408;
+  --c-shadow: 20 24 30;
+  --c-grain: 0.03;
+
+  /* Затемнение фоновых видео: слева почти сплошная бумага — там лежит
+     текст, справа видео проступает сильнее. Значения в rgb(), чтобы
+     подставлять прозрачность без color-mix. */
+  --video-scrim: linear-gradient(
+    100deg,
+    rgba(251, 248, 243, 0.97) 0%,
+    rgba(251, 248, 243, 0.9) 32%,
+    rgba(251, 248, 243, 0.5) 62%,
+    rgba(251, 248, 243, 0.18) 100%
+  );
+
+  /* Одна кривая на весь сайт — движение читается как одна система */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.dark {
+  /* Тёмная тема — графит с тёплым подтоном */
+  --c-paper: #0d0e10;
+  --c-paper-2: #15171a;
+  --c-paper-3: #1d2024;
+  --c-ink: #f6f2ea;
+  --c-ink-2: #c8c3b9;
+  --c-muted: #8f8b83;
+  --c-line: #2a2d33;
+  --c-line-strong: #3d424a;
+  --c-gold: #d4af37;
+  --c-gold-2: #e8cd74;
+  --c-gold-pale: #2b2417;
+  --c-on-gold: #17130a;
+  --c-shadow: 0 0 0;
+  --c-grain: 0.05;
+
+  --video-scrim: linear-gradient(
+    100deg,
+    rgba(13, 14, 16, 0.92) 0%,
+    rgba(13, 14, 16, 0.8) 32%,
+    rgba(13, 14, 16, 0.42) 62%,
+    rgba(13, 14, 16, 0.1) 100%
+  );
+}
+
+@theme inline {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Cormorant Garamond", ui-serif, Georgia, "Times New Roman", serif;
+
+  --color-paper: var(--c-paper);
+  --color-paper-2: var(--c-paper-2);
+  --color-paper-3: var(--c-paper-3);
+  --color-ink: var(--c-ink);
+  --color-ink-2: var(--c-ink-2);
+  --color-muted: var(--c-muted);
+  --color-line: var(--c-line);
+  --color-line-strong: var(--c-line-strong);
+  --color-gold: var(--c-gold);
+  --color-gold-2: var(--c-gold-2);
+  --color-gold-pale: var(--c-gold-pale);
+  --color-on-gold: var(--c-on-gold);
+}
+
+/* ============================================================
+   БАЗА
+   ============================================================ */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Чтобы якорные ссылки не уезжали под фиксированную шапку */
+    scroll-padding-top: 88px;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--c-paper);
+    color: var(--c-ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+
+  html,
+  body,
+  #root {
+    max-width: 100%;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* Заголовки ломаются по смыслу, а не по остатку строки */
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--c-gold);
+    color: var(--c-on-gold);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--c-gold);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+@layer components {
+  /* Цифры одинаковой ширины — счётчики не дёргаются при анимации */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
+
+  /* ============================================================
+     ТИПОГРАФИКА
+     ============================================================ */
+
+  .display {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+  }
+
+  .display-italic {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+
+  /* Надзаголовок секции: тонкая золотая линия + разрядка */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--c-gold);
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 2rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.55;
+  }
+
+  .eyebrow--center::after {
+    content: '';
+    width: 2rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.55;
+  }
+
+  .lead {
+    color: var(--c-ink-2);
+    line-height: 1.7;
+  }
+
+  /* ============================================================
+     ПОВЕРХНОСТИ И КАРТОЧКИ
+     ============================================================ */
+
+  .surface {
+    background-color: var(--c-paper-2);
+    border: 1px solid var(--c-line);
+  }
+
+  .card {
+    position: relative;
+    background-color: var(--c-paper-2);
+    border: 1px solid var(--c-line);
+    transition:
+      border-color 0.4s var(--ease-out),
+      transform 0.4s var(--ease-out),
+      box-shadow 0.4s var(--ease-out);
+  }
+
+  /* Золотые уголки раскрываются при наведении */
+  .card::before,
+  .card::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-color: var(--c-gold);
+    border-style: solid;
+    border-width: 0;
+    opacity: 0;
+    transition:
+      width 0.45s var(--ease-out),
+      height 0.45s var(--ease-out),
+      opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .card::before {
+    top: -1px;
+    left: -1px;
+    border-top-width: 1px;
+    border-left-width: 1px;
+  }
+
+  .card::after {
+    right: -1px;
+    bottom: -1px;
+    border-bottom-width: 1px;
+    border-right-width: 1px;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 48px -28px rgb(var(--c-shadow) / 0.4);
+  }
+
+  .card:hover::before,
+  .card:hover::after {
+    width: 2rem;
+    height: 2rem;
+    opacity: 1;
+  }
+
+  .hairline {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--c-line-strong), transparent);
+    border: 0;
+  }
+
+  .rule-gold {
+    width: 3.5rem;
+    height: 2px;
+    background: var(--c-gold);
+    transform-origin: left;
+  }
+
+  /* Черта прочерчивается, когда секция появляется */
+  html.js .reveal .rule-gold {
+    transform: scaleX(0);
+    transition: transform 0.7s var(--ease-out) 0.2s;
+  }
+
+  html.js .reveal.is-visible .rule-gold {
+    transform: scaleX(1);
+  }
+
+  /* ============================================================
+     КНОПКИ
+     ============================================================ */
+
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0 1.75rem;
+    overflow: hidden;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+    transition:
+      color 0.3s ease,
+      border-color 0.3s ease,
+      transform 0.35s var(--ease-out);
+    cursor: pointer;
+  }
+
+  .btn > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Заливка наезжает снизу, а не просто меняет цвет */
+  .btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateY(101%);
+    transition: transform 0.45s var(--ease-out);
+  }
+
+  .btn:hover::before {
+    transform: translateY(0);
+  }
+
+  .btn-primary {
+    background-color: var(--c-gold);
+    color: var(--c-on-gold);
+  }
+
+  .btn-primary::before {
+    background-color: var(--c-ink);
+  }
+
+  .btn-primary:hover {
+    color: var(--c-paper);
+  }
+
+  .btn-outline {
+    border-color: var(--c-line-strong);
+    color: var(--c-ink);
+    background-color: transparent;
+  }
+
+  .btn-outline::before {
+    background-color: var(--c-gold);
+  }
+
+  .btn-outline:hover {
+    border-color: var(--c-gold);
+    color: var(--c-on-gold);
+  }
+
+  .btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn:disabled::before {
+    transform: translateY(101%);
+  }
+
+  /* ============================================================
+     ФОРМЫ
+     ============================================================ */
+
+  .field {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.75rem 1rem;
+    background-color: var(--c-paper);
+    border: 1px solid var(--c-line);
+    color: var(--c-ink);
+    font-size: 0.9375rem;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .field::placeholder {
+    color: var(--c-muted);
+  }
+
+  .field:focus {
+    outline: none;
+    border-color: var(--c-gold);
+    box-shadow: inset 0 -2px 0 var(--c-gold);
+  }
+
+  .field-label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+  }
+
+  /* ============================================================
+     ФОН: ГРАДИЕНТЫ И ЗЕРНО
+     Вместо WebGL — чистый CSS. Зерно даёт ощущение печатной бумаги,
+     из-за него плоские заливки перестают выглядеть цифровыми.
+     ============================================================ */
+
+  .bg-decor {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-color: var(--c-paper);
+  }
+
+  .bg-decor::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 55% at 50% -10%, color-mix(in srgb, var(--c-gold) 16%, transparent), transparent 70%),
+      radial-gradient(ellipse 50% 40% at 100% 20%, color-mix(in srgb, var(--c-gold) 9%, transparent), transparent 70%),
+      radial-gradient(ellipse 60% 45% at 0% 75%, color-mix(in srgb, var(--c-gold) 7%, transparent), transparent 70%);
+  }
+
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: var(--c-grain);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ============================================================
+     ПОЯВЛЕНИЕ ПРИ ПРОКРУТКЕ
+     Без JavaScript содержимое просто видно — поэтому в разметке нет
+     элементов с opacity:0 и текст рисуется сразу, не дожидаясь React.
+     ============================================================ */
+
+  .reveal {
+    opacity: 1;
+  }
+
+  html.js .reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    transition:
+      opacity 0.7s var(--ease-out),
+      transform 0.7s var(--ease-out);
+    transition-delay: var(--reveal-delay, 0s);
+  }
+
+  html.js .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ============================================================
+     ПЕРВЫЙ ЭКРАН
+     ============================================================ */
+
+  /* Строка заголовка выезжает из-под маски. Текст при этом
+     полностью присутствует в разметке и доступен поисковику. */
+  .mask-line {
+    display: block;
+    overflow: hidden;
+    /* Запас под выносные элементы: у «у», «д», «р» хвосты уходят ниже
+       базовой линии, и при плотном межстрочном маска их обрезала бы.
+       Отрицательный отступ возвращает блок на место в потоке. */
+    padding-bottom: 0.14em;
+    margin-bottom: -0.14em;
+  }
+
+  .mask-line > span {
+    display: block;
+    animation: maskRise 0.95s var(--ease-out) both;
+    animation-delay: var(--mask-delay, 0s);
+  }
+
+  @keyframes maskRise {
+    from { transform: translateY(105%); }
+    to { transform: translateY(0); }
+  }
+
+  .hero-in {
+    animation: heroIn 0.7s var(--ease-out) both;
+    animation-delay: var(--hero-delay, 0s);
+  }
+
+  @keyframes heroIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* Медленно вращающееся кольцо за заголовком */
+  .hero-ring {
+    animation: heroRing 46s linear infinite;
+  }
+
+  @keyframes heroRing {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Подсказка «прокрутите вниз» */
+  .scroll-cue span {
+    display: block;
+    width: 1px;
+    height: 3.5rem;
+    background: linear-gradient(to bottom, var(--c-gold), transparent);
+    transform-origin: top;
+    animation: scrollCue 2.4s var(--ease-in-out) infinite;
+  }
+
+  @keyframes scrollCue {
+    0% { transform: scaleY(0); opacity: 0; }
+    40% { transform: scaleY(1); opacity: 1; }
+    100% { transform: scaleY(1) translateY(100%); opacity: 0; }
+  }
+
+  /* ============================================================
+     ИНДИКАТОР ПРОКРУТКИ И НАВИГАЦИЯ ПО СЕКЦИЯМ
+     ============================================================ */
+
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 60;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--c-gold), var(--c-gold-2));
+    transform-origin: left;
+    transform: scaleX(var(--progress, 0));
+    pointer-events: none;
+  }
+
+  .dot-nav {
+    position: fixed;
+    right: 1.4rem;
+    top: 50%;
+    z-index: 40;
+    display: none;
+    flex-direction: column;
+    gap: 1rem;
+    transform: translateY(-50%);
+  }
+
+  .dot-nav button {
+    position: relative;
+    display: block;
+    width: 1.75rem;
+    height: 1px;
+    background: var(--c-line-strong);
+    transition: background-color 0.3s ease, width 0.35s var(--ease-out);
+    cursor: pointer;
+  }
+
+  .dot-nav button:hover {
+    width: 2.5rem;
+    background: var(--c-gold);
+  }
+
+  .dot-nav button[aria-current='true'] {
+    width: 2.75rem;
+    background: var(--c-gold);
+  }
+
+  /* Название секции выезжает при наведении на риску */
+  .dot-nav button span {
+    position: absolute;
+    right: calc(100% + 0.75rem);
+    top: 50%;
+    transform: translateY(-50%) translateX(6px);
+    white-space: nowrap;
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--c-gold);
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s var(--ease-out);
+    pointer-events: none;
+  }
+
+  .dot-nav button:hover span {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+
+  @media (min-width: 1280px) {
+    .dot-nav {
+      display: flex;
+    }
+  }
+
+  /* ============================================================
+     КУРСОР
+     Только для мыши: на тач-устройствах и при отключённых анимациях
+     не появляется вовсе, родной курсор при этом не скрывается.
+     ============================================================ */
+
+  .cursor-dot,
+  .cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9998;
+    pointer-events: none;
+    border-radius: 50%;
+    will-change: transform;
+  }
+
+  .cursor-dot {
+    width: 5px;
+    height: 5px;
+    margin: -2.5px 0 0 -2.5px;
+    background: var(--c-gold);
+  }
+
+  .cursor-ring {
+    width: 34px;
+    height: 34px;
+    margin: -17px 0 0 -17px;
+    border: 1px solid color-mix(in srgb, var(--c-gold) 55%, transparent);
+    transition:
+      width 0.3s var(--ease-out),
+      height 0.3s var(--ease-out),
+      margin 0.3s var(--ease-out),
+      background-color 0.3s ease,
+      border-color 0.3s ease;
+  }
+
+  .cursor-ring.is-active {
+    width: 56px;
+    height: 56px;
+    margin: -28px 0 0 -28px;
+    background: color-mix(in srgb, var(--c-gold) 12%, transparent);
+    border-color: var(--c-gold);
+  }
+
+  html.has-custom-cursor,
+  html.has-custom-cursor a,
+  html.has-custom-cursor button {
+    cursor: none;
+  }
+
+  /* ============================================================
+     ФОТО КОМАНДЫ
+     ============================================================ */
+
+  .photo-frame {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .photo-frame img {
+    filter: grayscale(1) contrast(1.02);
+    transition: filter 0.6s ease, transform 0.8s var(--ease-out);
+  }
+
+  .card:hover .photo-frame img {
+    filter: grayscale(0);
+    transform: scale(1.045);
+  }
+
+  /* Фотография раскрывается снизу вверх при появлении */
+  html.js .reveal .photo-frame img {
+    clip-path: inset(100% 0 0 0);
+    transition:
+      clip-path 0.9s var(--ease-out) var(--photo-delay, 0s),
+      filter 0.6s ease,
+      transform 0.8s var(--ease-out);
+  }
+
+  html.js .reveal.is-visible .photo-frame img {
+    clip-path: inset(0 0 0 0);
+  }
+
+  /* ============================================================
+     ФОНОВОЕ ВИДЕО
+     Полноэкранная кинематографичная подложка под первым и последним
+     разделами. Затемнение сверху — чтобы текст оставался читаемым
+     в обеих темах, зерно поверх уже есть на уровне всего сайта.
+     ============================================================ */
+
+  .video-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .video-bg video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.4s ease;
+  }
+
+  .video-bg video.is-ready {
+    opacity: 1;
+  }
+
+  .video-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--video-scrim);
+  }
+
+  /* Финальный раздел — драматичный, тёмный ролик. В светлой теме он не
+     монтируется вовсе (см. FinalCta.tsx), поэтому свой скрим ему не нужен;
+     здесь только выравниваем скрим под центрированный, а не боковой текст. */
+  .video-bg--center::after {
+    background: radial-gradient(
+      ellipse 70% 60% at 50% 55%,
+      rgba(13, 14, 16, 0.88) 0%,
+      rgba(13, 14, 16, 0.72) 45%,
+      rgba(13, 14, 16, 0.4) 100%
+    );
+  }
+
+  /* ============================================================
+     ЛЕНТА ЭТАПОВ
+     Золотая линия заполняется по мере прокрутки — видно, сколько
+     пути пройдено. Высота задаётся переменной --fill из React.
+     ============================================================ */
+
+  .timeline::before,
+  .timeline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.85rem;
+    width: 1px;
+  }
+
+  .timeline::before {
+    bottom: 0.85rem;
+    background: var(--c-line);
+  }
+
+  .timeline::after {
+    height: calc(var(--fill, 0) * 100%);
+    max-height: calc(100% - 1.7rem);
+    background: var(--c-gold);
+  }
+
+  /* ============================================================
+     ПРОЧЕЕ
+     ============================================================ */
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: color-mix(in srgb, var(--c-gold) 40%, transparent);
+    border-radius: 10px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: var(--c-gold);
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+.animate-marquee {
+  animation: marquee 90s linear infinite;
+}
+
+@media (max-width: 639px) {
+  .animate-marquee {
+    animation-duration: 55s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  html.js .reveal,
+  .hero-in,
+  .mask-line > span {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+
+  html.js .reveal .rule-gold,
+  html.js .reveal.is-visible .rule-gold {
+    transform: none !important;
+  }
+
+  html.js .reveal .photo-frame img,
+  html.js .reveal.is-visible .photo-frame img {
+    clip-path: none !important;
+  }
+
+  .hero-ring,
+  .scroll-cue span,
+  .animate-marquee {
+    animation: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

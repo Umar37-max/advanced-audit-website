@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="ADVANCED AUDIT">
+  <rect width="512" height="512" fill="#fbf8f3"/>
+  <g transform="translate(256 210) scale(4.6) translate(-24 -24)" fill="none">
+    <path d="M36.4 8.6a19 19 0 1 1-26.6 3.3" stroke="#b0872a" stroke-width="1.7" stroke-linecap="round" opacity="0.85"/>
+    <path d="M11.6 39.4A19 19 0 0 0 40 24" stroke="#b0872a" stroke-width="1.7" stroke-linecap="round" opacity="0.4"/>
+    <path d="M14 36 24 12l10 24" stroke="#15181c" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="18.6" y="29.4" width="2.4" height="4.2" fill="#b0872a" opacity="0.75"/>
+    <rect x="22.8" y="26.6" width="2.4" height="7" fill="#b0872a" opacity="0.9"/>
+    <rect x="27" y="23.4" width="2.4" height="10.2" fill="#b0872a"/>
+  </g>
+  <text x="256" y="404" font-family="Georgia, 'Times New Roman', serif" font-size="54" font-weight="600" fill="#15181c" text-anchor="middle" letter-spacing="6">ADVANCED</text>
+  <text x="256" y="446" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="500" fill="#b0872a" text-anchor="middle" letter-spacing="16">AUDIT</text>
+</svg>
