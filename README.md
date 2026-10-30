@@ -94,7 +94,7 @@ advanced-audit-website/
 **Requirements:** Node.js 20+ and npm.
 
 ```bash
-git clone https://github.com/Umar37-max/advanced-audit-website.git
+git clone https://github.com/umar-rustamov/advanced-audit-website.git
 cd advanced-audit-website
 npm install
 cp .env.example .env        # fill in the Telegram values
